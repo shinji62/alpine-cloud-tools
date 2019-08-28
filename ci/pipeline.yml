@@ -1,0 +1,60 @@
+---
+jobs:
+- name: build-ship-it
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: alpine-docker-image
+      trigger: true
+      params:
+        skip_download: true
+    - get: alpine-cloud-tools-git
+      trigger: true
+  - put: version
+    params: 
+      bump: minor
+      annotate: version/number
+  - put: alpine-cloud-tools-docker-image
+    params:
+      build: alpine-cloud-tools-git/
+      tag: version/number
+      tag_as_latest: true
+  - put: alpine-cloud-tools-git 
+    params: 
+      only_tag: true
+      repository: alpine-cloud-tools-git
+      tag: version/number
+
+      
+resources:
+- name: alpine-cloud-tools-git
+  type: git
+  source:
+    uri: git@github.com:shinji62/alpine-cloud-tools.git
+    branch: master
+    private_key: {{private-key-github-concourse}}
+
+- name: alpine-cloud-tools-docker-image
+  type: docker-image
+  source:
+    repository: getourneau/alpine-cloud-tools
+    email: {{email-docker-hub}}
+    username: {{username-docker-hub}}
+    password: {{password-docker-hub}}
+
+- name: alpine-docker-image
+  type: docker-image
+  source:
+    repository: alpine
+
+- name: version
+  type: semver
+  source:
+    driver: git
+    uri: git@github.com:shinji62/version-concourse.git
+    branch: master
+    file: alpine-cloud-tools/version
+    private_key: {{private-key-github-concourse}}
+    git_user: {{concourse-user-gitinfo}}
+
