@@ -38,12 +38,12 @@ RUN chmod +x /bin/awless
 RUN wget "https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64-slim" -O /bin/gomplate
 RUN chmod +x /bin/gomplate
 
-RUN wget "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM011_VERSION}_linux_amd64.zip" -O /tmp/terraform.zip \
+RUN wget "https://releases.hashicorp.com/terraform/${TERRAFORM011_VERSION}/terraform_${TERRAFORM011_VERSION}_linux_amd64.zip" -O /tmp/terraform.zip \
     && unzip /tmp/terraform.zip -d /bin \
     && rm /tmp/terraform.zip \
     && mv /bin/terraform /bin/terraform0.11
 
-RUN wget "https://releases.hashicorp.com/terraform/${TERRAFORM012_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -O /tmp/terraform.zip \
+RUN wget "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -O /tmp/terraform.zip \
     && unzip /tmp/terraform.zip -d /bin \
     && rm /tmp/terraform.zip 
 
